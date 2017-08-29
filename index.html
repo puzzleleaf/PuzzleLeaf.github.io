@@ -297,7 +297,8 @@
                         <!-- TITLE -->
                         <div class="inner_about_title">
                             <h2>술에 대한 랭킹을 제공합니다.</h2>
-                            <p>사용자들의 평가를 바탕으로 실시간으로 랭킹 정보를 제공합니다.</p>
+                            <p>사용자들의 평가를 바탕으로 실시간으로 랭킹 정보를 제공합니다.<br><br>
+                            소주, 맥주, 막걸리를 포함해 현재 85종의 술이 등록되어 있습니다.</p>
                         </div>
                         <div class="inner_about_desc">
 
@@ -529,8 +530,8 @@
                             <!-- TITLE -->
                             <div class="inner_about_title">
                                 <h2>여러가지 모드를 제공합니다.</h2>
-                                <p>기본 애니메이션 효과부터 메시지 모드, 룰렛 모드, 전광판 모드, 술 마시는 모드를 제공합니다.<br><br>
-                                [Processing과 SharedPreference를 이용하여 구현]</p>
+                                <p>기본 애니메이션 효과부터 메시지 모드, 룰렛 모드, 전광판 모드, 술 마시는 모드를 제공합니다.
+                             </p>
                             </div>
                             <div class="inner_about_desc">
 
@@ -782,6 +783,7 @@
      START FEATURES
 ============================== -->
     <section id="FEATURES" class="features page">
+
         <div class="container">
             <div class="row">
                 <div class="col-md-10 col-md-offset-1">
@@ -796,7 +798,108 @@
             </div>
         </div>
 
+      
+
         <div class="feature_inner">
+         <div class="container">
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="about_phone wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".5s">
+                            <!-- PHONE -->
+                                <img src="images/memory.png" alt="">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6  wow fadeInRight" data-wow-duration="1s" data-wow-delay=".5s">
+                            <!-- TITLE -->
+                            <div class="inner_about_title">
+                                <h2>메모리 문제</h2>
+                                <p>Processing Android 용 라이브러리를 사용하는데 메모리 누수 발생으로 처음에 고민을 많이 했습니다.<br><br>
+                                Android Monitors를 통해서 오랫동안 분석을 해봤습니다.</p>
+                            </div>
+                         
+                          <div class="inner_about_desc">
+
+                                 <!-- SINGLE DESC -->
+                                <div class="single_about_area fadeInUp wow" data-wow-duration=".5s" data-wow-delay="1s">
+                                    <!-- ICON -->
+                                    <div><i class="pe-7s-timer"></i></div>
+                                    <!-- HEADING DESCRIPTION -->
+                                    <h3>계속해서 증가하는 메모리</h3>
+                                    <p>애니메이션이 구현된 액티비티를 종료해도 메모리가 해제되지 않는 메모리 누수가 발생(GC를 통해 제거되지 않음)</p>
+                                </div>
+                                <!-- END SINGLE DESC -->
+
+
+                                <!-- SINGLE DESC -->
+                                <div class="single_about_area fadeInUp wow" data-wow-duration=".5s" data-wow-delay="1.5s">
+                                    <!-- ICON -->
+                                    <div><i class="pe-7s-target"></i></div>
+                                    <!-- HEADING DESCRIPTION -->
+                                    <h3>원인은?</h3>
+                                    <p>Processing을 이용해 앱을 만드는 사례도 드물었었고, Github에서 다른 이슈들을 확인해본 결과 라이브러리 내부 문제로 파악</p>
+                                </div>
+                                <!-- END SINGLE DESC -->
+
+                                   <!-- SINGLE DESC -->
+                                <div class="single_about_area fadeInUp wow" data-wow-duration=".5s" data-wow-delay="2s">
+                                    <!-- ICON -->
+                                    <div><i class="pe-7s-stopwatch"></i></div>
+                                    <!-- HEADING DESCRIPTION -->
+                                    <h3>해결!</h3>
+                                    <p>프로젝트의 구조를 한번의 애니메이션 액티비티를 호출하는 메인 애니메이션 중심 구조로 바꾸면서 해결</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                 <div class="container">
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="about_phone wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".5s">
+                            <!-- PHONE -->
+                                <img src="images/glide.png" alt="">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6  wow fadeInRight" data-wow-duration="1s" data-wow-delay=".5s">
+                            <!-- TITLE -->
+                            <div class="inner_about_title">
+                                <h2>정말 유용한 Glide</h2>
+                                <p>앞서 메모리에 대한 이슈 문제로 한동안 고민을 해서, 이미지 로딩을 많이 해야 하는 랭킹 메뉴 때문에 고민 했습니다.</p>
+                            </div>
+                         
+                          <div class="inner_about_desc">
+
+                                 <!-- SINGLE DESC -->
+                                <div class="single_about_area fadeInUp wow" data-wow-duration=".5s" data-wow-delay="1s">
+                                    <!-- ICON -->
+                                    <div><i class="pe-7s-timer"></i></div>
+                                    <!-- HEADING DESCRIPTION -->
+                                    <h3>이미지 캐싱</h3>
+                                    <p>Glide는 ImageView의 크기에 맞는 이미지를 캐시하기 때문에 메모리 사용량을 많이 줄일 수 있었습니다.</p>
+                                </div>
+                                <!-- END SINGLE DESC -->
+
+
+                                <!-- SINGLE DESC -->
+                                <div class="single_about_area fadeInUp wow" data-wow-duration=".5s" data-wow-delay="1.5s">
+                                    <!-- ICON -->
+                                    <div><i class="pe-7s-target"></i></div>
+                                    <!-- HEADING DESCRIPTION -->
+                                    <h3>이미지 로딩</h3>
+                                    <p>Firebase의 저장된 이미지를 로딩하기 위해서 비동기 처리부터 HttpConnection 설정 작업까지 많은 작업들을 수행할 필요 없이 쉽게 이미지를 가지고 올 수 있었습니다.</p>
+                                </div>
+                                <!-- END SINGLE DESC -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br><br>
             <div class="container">
                 <div class="row">
                     <div class="col-md-4 right_no_padding wow fadeInLeft" data-wow-duration="1s">
@@ -827,15 +930,7 @@
 
 
                         <!-- FEATURE -->
-                        <div class="left_single_feature">
-                            <!-- ICON -->
-                            <div><span class="pe-7s-look"></span></div>
-
-                            <!-- FEATURE HEADING AND DESCRIPTION -->
-                            <h3>애니메이션 메모리<span>/</span></h3>
-                            <p>Processing 라이브러리를 사용하는데 사용하는데 발생한 메모리 문제<br>
-                            [여러번 호출되지 않도록 해결]</p>
-                        </div>
+             
                         <!-- END SINGLE FEATURE -->
 
                     </div>
@@ -911,40 +1006,13 @@
                             개발을 진행하면서 프로젝트에 대해서 이야기를 할 팀원들이 있었다는 것이<br><br>
                             가장 많은 도움이 되었던 것 같습니다. 
 
-                            <br><br><br><br><br><br>
-
-                            이번 부스트캠프 기간 중 배운 내용들을 이용하여<br><br>
-                            하단의 3개의 프로젝트를 진행했고<br><br>
-                            예전에 만들었던 프로젝트들과 비교했을 때<br><br>
-                            많이 발전하는 계기가 된 것 같습니다.<br><br>
-
-                            <br><br>
-                            감사합니다.
+                            <br><br><br>
+                            그리고 온전히 하나의 프로젝트에 몰두해서<br><br> 개발 해 볼 수 있는 기회를 제공해 주셔서 감사합니다.<br><br>
                         </p>
                     </div>
                 </div>
 
 
-   <div class="feature_inner">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4 right_no_padding wow fadeInLeft" data-wow-duration="1s">
-                        <!-- FEATURE -->
-
-                    </div>
-                    <div class="col-md-4">
-                        <div class="feature_iphone">
-                            <!-- FEATURE PHONE IMAGE -->
-                            <img class="wow bounceIn" data-wow-duration="1s" src="images/project.png" alt="">
-                        </div>
-                    </div>
-                    <div class="col-md-4 left_no_padding wow fadeInRight" data-wow-duration="1s">
-
-                        <!-- END SINGLE FEATURE -->
-                    </div>
-                </div>
-            </div>
-        </div>
 </section>
 
 
