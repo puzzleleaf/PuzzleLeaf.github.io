@@ -1,0 +1,5 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target" : { "namespace": "cherryBlossom", "package_name": "com.tistory.puzzleleaf.cherryblossom.feature",
+               "sha256_cert_fingerprints": ["23:9D:3C:96:F8:AB:B5:00:11:3B:F3:1E:68:35:D2:4C:04:82:9C:30:4E:DC:4D:C9:94:C4:47:7E:9A:AE:DF:3F"] }
+}]
