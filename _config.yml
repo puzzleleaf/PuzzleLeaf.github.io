@@ -127,9 +127,9 @@ author:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/PuzzleLeaf"
-    - label: "Instagram"
+    - label: "Rank of Alchole"
       icon: "fab fa-fw fa-instagram"
-      # url: "https://instagram.com/"
+      url: "https://rankofalcohol.firebaseapp.com/"
 
 # Site Footer
 footer:
