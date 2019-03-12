@@ -73,10 +73,10 @@ algolia:
   search_only_api_key    : # YOUR_SEARCH_ONLY_API_KEY
   powered_by             : # true (default), false
 google:
-  search_engine_id       : # YOUR_SEARCH_ENGINE_ID
+  search_engine_id       : "016749083354122820701:msv-i_rsowg"
   instant_search         : # false (default), true
 # SEO Related
-google_site_verification :
+google_site_verification : "pH3wuDuMH-fpS4SArKRkGxsw1KA5ueR_qsK_qwRVLFg"
 bing_site_verification   :
 yandex_site_verification :
 naver_site_verification  :
