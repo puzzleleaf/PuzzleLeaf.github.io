@@ -1,17 +1,17 @@
 {
-  "name": "minimal-mistakes",
-  "version": "4.15.2",
-  "description": "Minimal Mistakes 2 column Jekyll theme.",
+  "name": "puzzleleaf-blog",
+  "version": "1.0",
+  "description": ".",
   "repository": {
     "type": "git",
-    "url": "git://github.com/mmistakes/minimal-mistakes.git"
+    "url": "https://github.com/PuzzleLeaf/PuzzleLeaf.github.io.git"
   },
   "keywords": [
     "jekyll",
     "theme",
     "minimal"
   ],
-  "author": "Michael Rose",
+  "author": "Puzzleleaf",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mmistakes/minimal-mistakes/issues"
