@@ -15,7 +15,7 @@
 minimal_mistakes_skin    : "mint" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
-locale                   : "kr"
+locale                   : "ko"
 title                    : "Puzzleleaf Tech Blog"
 title_separator          : "-"
 name                     : &name "puzzleleaf"
@@ -79,7 +79,7 @@ google:
 google_site_verification : "pH3wuDuMH-fpS4SArKRkGxsw1KA5ueR_qsK_qwRVLFg"
 bing_site_verification   :
 yandex_site_verification :
-naver_site_verification  :
+naver_site_verification  : "8b9f55d0eca76c918834bd35dad47e08"
 
 # Social Sharing
 twitter:
@@ -293,6 +293,7 @@ defaults:
       comments: true
       share: true
       related: true
+      show_date: true
   # _pages
   - scope:
       path: "_pages"
@@ -300,3 +301,5 @@ defaults:
     values:
       layout: single
       author_profile: true
+
+github: [metadata]
