@@ -1,12 +1,21 @@
 ---
 title: "블로그에 highlight code 적용하기"
+excerpt: "블로그를 처음부터 깔끔하게 관리하고 싶어서 새로 만들게 되었습니다."
+header:
+  overlay_color: "#333"
+# header:
+#   overlay_image: /assets/images/unsplash-image-1.jpg
+#   overlay_filter: 0.5 # same as adding an opacity of 0.5 to a black background
+#   overlay_filter: rgba(255, 0, 0, 0.5)
+#   caption: "Photo credit: [**Unsplash**](https://unsplash.com)"
 categories: Blog
 tags: Blog
-toc: true  
+toc: true
+toc_label: "목차"
 toc_sticky: true 
+toc_icon: "list"
 ---
 
----
 # 개요
 
 블로그를 처음부터 깔끔하게 관리하고 싶어서 새로 만들게 되었습니다.    
@@ -21,12 +30,12 @@ toc_sticky: true
 아래 이미지를 보면 뭔가 조금 더 개발자스러운(?) 느낌으로 적용할 수 있을 것 같아서 이것을 블로그에 적용해보기로 했습니다.
 
 <p style="text-align: center">
-  <img src="https://user-images.githubusercontent.com/20354164/118154391-f32b8b80-b451-11eb-8060-d55b0e359cc2.png" alt>
+  <img src="https://user-images.githubusercontent.com/20354164/118154391-f32b8b80-b451-11eb-8060-d55b0e359cc2.png" alt><br/>
   <span>Carbon 스타일</span>
 </p>
 
 <p style="text-align: center">
-  <img src="https://user-images.githubusercontent.com/20354164/118154889-92508300-b452-11eb-94a2-e687297b6ac4.png" alt>
+  <img src="https://user-images.githubusercontent.com/20354164/118154889-92508300-b452-11eb-94a2-e687297b6ac4.png" alt><br/>
   <span>Ubuntu 스타일</span>
 </p>
 
