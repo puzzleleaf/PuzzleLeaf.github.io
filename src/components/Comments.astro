@@ -1,0 +1,55 @@
+---
+import { comments } from '../config';
+interface Props { postId: string; }
+const { postId } = Astro.props;
+const configured = Boolean(comments.repo && comments.repoId && comments.category && comments.categoryId);
+---
+{configured && <section class="comments-section" aria-labelledby="comments-heading" data-giscus data-repo={comments.repo} data-repo-id={comments.repoId} data-category={comments.category} data-category-id={comments.categoryId} data-term={`post:${postId}`}>
+  <h2 id="comments-heading">댓글</h2>
+  <div class="giscus" data-giscus-mount></div>
+  <p class="comments-error" data-giscus-error role="status" hidden>댓글을 불러오지 못했습니다. <button type="button" data-giscus-retry>다시 시도</button></p>
+  <noscript><p>댓글을 보려면 JavaScript를 활성화해주세요.</p></noscript>
+</section>}
+<script>
+  const section = document.querySelector<HTMLElement>('[data-giscus]');
+  if (section) {
+    const mount = section.querySelector<HTMLElement>('[data-giscus-mount]')!;
+    const error = section.querySelector<HTMLElement>('[data-giscus-error]')!;
+    const theme = () => document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+    let started = false;
+    function updateTheme() {
+      mount.querySelector<HTMLIFrameElement>('iframe')?.contentWindow?.postMessage({ giscus: { setConfig: { theme: theme() } } }, 'https://giscus.app');
+    }
+    function loadComments() {
+      if (started) return;
+      started = true; error.hidden = true;
+      const script = document.createElement('script');
+      script.src = 'https://giscus.app/client.js'; script.async = true; script.crossOrigin = 'anonymous';
+      const settings: Record<string, string> = {
+        repo: section!.dataset.repo!, 'repo-id': section!.dataset.repoId!,
+        category: section!.dataset.category!, 'category-id': section!.dataset.categoryId!,
+        mapping: 'specific', term: section!.dataset.term!, strict: '1',
+        'reactions-enabled': '0', 'emit-metadata': '0', 'input-position': 'top',
+        theme: theme(), lang: 'ko',
+      };
+      for (const [key, value] of Object.entries(settings)) script.setAttribute(`data-${key}`, value);
+      script.addEventListener('error', () => { started = false; script.remove(); error.hidden = false; });
+      script.addEventListener('load', () => { mount.querySelector('iframe')?.addEventListener('load', updateTheme, { once: true }); });
+      mount.append(script);
+    }
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(entries => {
+        if (entries.some(entry => entry.isIntersecting)) { observer.disconnect(); loadComments(); }
+      }, { rootMargin: '200px' });
+      observer.observe(section);
+    } else loadComments();
+    section.querySelector('[data-giscus-retry]')?.addEventListener('click', loadComments);
+    new MutationObserver(updateTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  }
+</script>
+<style>
+  .comments-section{margin-top:45px;padding-top:25px;border-top:1px solid var(--line);min-height:180px}
+  .comments-section h2{font-size:16px;font-weight:500;margin-bottom:23px}
+  .comments-section noscript p,.comments-error{font-size:12px;color:var(--muted)}
+  .comments-error button{border:0;background:none;padding:0;margin-left:6px;color:var(--green);font-size:12px;text-decoration:underline}
+</style>

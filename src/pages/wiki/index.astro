@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import { getWiki } from '../../lib/posts';
+import { href, formatDate } from '../../config';
+const documents = await getWiki();
+const categories = [...new Set(documents.map(document => document.data.category))];
+---
+<Base title="위키" description="개념, 사용법, 참고 자료를 주제별로 정리한 puzzleleaf의 개인 지식 위키." active="wiki">
+  <div class="wiki-page container"><header class="home-intro"><h1>위키</h1><p>개념, 사용법, 참고 자료를 주제별로 정리합니다.</p></header>
+    <label class="tag-search wiki-search"><Icon name="search" size={17} /><input id="wiki-search" type="search" placeholder="제목·주제·태그로 찾기" aria-label="위키에서 찾기" autocomplete="off" /></label>
+    <p class="wiki-count" id="wiki-count" role="status">문서 {documents.length}개 · 주제 {categories.length}개</p>
+    {categories.map(category => <section class="wiki-topic" data-wiki-topic><h2>{category}<span>{documents.filter(document => document.data.category === category).length}</span></h2><div>{documents.filter(document => document.data.category === category).map(document => <article class="wiki-document" data-wiki-document data-search={`${document.data.title} ${document.data.description} ${document.data.category} ${document.data.tags.join(' ')} ${document.data.summary.join(' ')}`}><div><h3><a href={href(`wiki/${document.id}/`)}>{document.data.title}</a></h3><p>{document.data.description}</p><div class="post-tags">{document.data.tags.map(tag => <a href={href(`tags/${encodeURIComponent(tag)}/`)}>#{tag}</a>)}</div></div><time datetime={(document.data.updated || document.data.date).toISOString()}>{formatDate(document.data.updated || document.data.date)}</time></article>)}</div></section>)}
+    {documents.length === 0 && <p class="empty-state">등록된 문서가 없습니다.</p>}
+  </div>
+  <script>
+    const search = document.querySelector<HTMLInputElement>('#wiki-search')!;
+    const status = document.querySelector('#wiki-count')!;
+    search.addEventListener('input', () => {
+      const query = search.value.trim().toLocaleLowerCase(); let count = 0; let topics = 0;
+      document.querySelectorAll<HTMLElement>('[data-wiki-document]').forEach(document => { document.hidden = !document.dataset.search!.toLocaleLowerCase().includes(query); if (!document.hidden) count++; });
+      document.querySelectorAll<HTMLElement>('[data-wiki-topic]').forEach(topic => { topic.hidden = ![...topic.querySelectorAll<HTMLElement>('[data-wiki-document]')].some(document => !document.hidden); if (!topic.hidden) topics++; });
+      status.textContent = count ? `문서 ${count}개 · 주제 ${topics}개` : '일치하는 문서가 없습니다.';
+    });
+  </script>
+</Base>

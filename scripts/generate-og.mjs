@@ -1,4 +1,15 @@
 import sharp from 'sharp';
 import { fileURLToPath } from 'node:url';
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><rect width="1200" height="630" fill="#f8f9f5"/><rect x="55" y="55" width="1090" height="520" rx="18" fill="none" stroke="#dce3d4"/><circle cx="965" cy="315" r="155" fill="#edf1e7"/><g transform="translate(867 205) scale(1.35)"><path d="M129 24C64 7 19 42 30 92c9 42 60 53 86 14 15-23 19-50 13-82Z" fill="#3f6246"/><path d="m24 143 83-91M63 100V74m0 26h28" fill="none" stroke="#edf1e7" stroke-width="5" stroke-linecap="round"/></g><text x="115" y="160" fill="#3f6246" font-size="18" font-family="monospace" letter-spacing="3">DEVELOPMENT LOG</text><text x="110" y="303" fill="#26352d" font-size="88" font-family="Arial,sans-serif" font-weight="700" letter-spacing="-4">puzzleleaf.</text><text x="115" y="375" fill="#798078" font-size="30" font-family="Arial,sans-serif">Development notes by puzzleleaf.</text><path d="M115 423h630" stroke="#dce3d4"/><text x="115" y="482" fill="#3f6246" font-size="21" font-family="monospace">blog.puzzleleaf.dev</text></svg>`;
-await sharp(Buffer.from(svg)).png().toFile(fileURLToPath(new URL('../public/og.png', import.meta.url)));
+
+const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#fff"/>
+  <text x="100" y="140" fill="#777" font-size="22" font-family="Arial,sans-serif">TECHNICAL BLOG</text>
+  <text x="95" y="325" fill="#242424" font-size="100" font-family="Arial,sans-serif" font-weight="700" letter-spacing="-4">puzzleleaf</text>
+  <path d="M100 410h600" stroke="#ebebeb"/>
+  <text x="100" y="493" fill="#777" font-size="26" font-family="Arial,sans-serif">blog.puzzleleaf.dev</text>
+</svg>`;
+
+const logo = await sharp(fileURLToPath(new URL('../src/assets/puzzleleaf-logo.png', import.meta.url)))
+  .resize(280, 280).png().toBuffer();
+await sharp(Buffer.from(svg)).composite([{ input: logo, left: 830, top: 175 }])
+  .png().toFile(fileURLToPath(new URL('../public/og.png', import.meta.url)));

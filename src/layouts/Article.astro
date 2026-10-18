@@ -1,0 +1,79 @@
+---
+import { render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import BrandLogo from '../components/BrandLogo.astro';
+import Comments from '../components/Comments.astro';
+import PiHarnessLabs from '../components/PiHarnessLabs.astro';
+import { getPosts, getWiki, readingTime } from '../lib/posts';
+import { site, href, formatDate } from '../config';
+interface Props { post: CollectionEntry<'posts'> | CollectionEntry<'wiki'>; kind?: 'posts' | 'wiki'; }
+const { post, kind = 'posts' } = Astro.props;
+const isWiki = kind === 'wiki';
+const documents = isWiki ? await getWiki() : [];
+const linked = documents.filter(document => post.data.related.includes(document.id));
+const backlinks = documents.filter(document => document.id !== post.id && document.data.related.includes(post.id));
+const { Content, headings } = await render(post);
+const related = isWiki ? [] : (await getPosts()).filter(p => p.id !== post.id).sort((a,b) => Number(b.data.tags.some(t => post.data.tags.includes(t))) - Number(a.data.tags.some(t => post.data.tags.includes(t)))).slice(0,2);
+const canonical = new URL(href(`${kind}/${post.id}/`), Astro.site).href;
+const summary = post.data.summary.length ? post.data.summary : [post.data.description];
+const schema = {
+  '@context': 'https://schema.org', '@graph': [
+    { '@type': isWiki ? 'TechArticle' : 'BlogPosting', '@id': `${canonical}#article`, headline: post.data.title, description: post.data.description, datePublished: post.data.date.toISOString(), ...(post.data.updated ? { dateModified: post.data.updated.toISOString() } : {}), author: { '@type': 'Person', '@id': new URL(href('about/'), Astro.site).href + '#person', name: site.author, url: new URL(href('about/'), Astro.site).href }, mainEntityOfPage: canonical, image: new URL(href('og.png'), Astro.site).href, inLanguage: 'ko-KR', keywords: post.data.tags.join(', '), articleSection: post.data.category },
+    { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: site.title, item: Astro.site?.href }, ...(isWiki ? [{ '@type': 'ListItem', position: 2, name: '위키', item: new URL(href('wiki/'), Astro.site).href }] : []), { '@type': 'ListItem', position: isWiki ? 3 : 2, name: post.data.title, item: canonical }] },
+  ],
+};
+---
+<Base title={post.data.title} description={post.data.description} type="article" active={kind} noindex={post.data.sample}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g, '\\u003c')} />
+  <article class:list={['article-container', 'container', { 'wiki-article': isWiki }]}>
+    <header class="article-top"><a class="back-link" href={href(isWiki ? 'wiki/' : '')}>{isWiki ? '← 위키' : '← 글 목록'}</a><div class="post-meta"><span class="category-label">{post.data.category}</span><span>·</span>{readingTime(post.body)}분 읽기</div><h1>{post.data.title}</h1><p class="article-description">{post.data.description}</p><div class="article-byline"><a href={href('about/')} class="author-mark" aria-label="작성자 소개"><BrandLogo size={32} /></a><a rel="author" href={href('about/')}>{site.author}</a><span>·</span><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>{post.data.updated && <><span>·</span><span>수정 <time datetime={post.data.updated.toISOString()}>{formatDate(post.data.updated)}</time></span></>}</div><div class="post-tags">{post.data.tags.map(tag => <a href={href(`tags/${encodeURIComponent(tag)}/`)}>#{tag}</a>)}</div></header>
+    <div class="article-layout">
+      {headings.some(h => h.depth === 2) && <nav class="article-toc" aria-label="이 글의 목차"><h2>목차</h2><ol>{headings.filter(h => h.depth === 2).map(heading => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol></nav>}
+      <div class="article-content">
+      {post.data.sample && <aside class="sample-notice">작성 형식을 보여주는 샘플 글입니다. 검색 색인 대상에서 제외됩니다.</aside>}
+      <div class="article-tabs" data-article-tabs role="tablist" aria-label="글 보기 방식" hidden>
+        <button id="body-tab" role="tab" aria-selected="true" aria-controls="post-body" tabindex="0">본문</button>
+        <button id="summary-tab" role="tab" aria-selected="false" aria-controls="post-summary" tabindex="-1">요약</button>
+      </div>
+      <section id="post-body" class="article-panel" data-article-panel role="tabpanel" aria-labelledby="body-tab" tabindex="0"><div class="prose"><Content /></div></section>
+      <section id="post-summary" class="article-panel summary-panel" data-article-panel role="tabpanel" aria-labelledby="summary-tab" tabindex="0" hidden><h2>핵심 요약</h2><ul>{summary.map(item => <li>{item}</li>)}</ul></section>
+      <div class="article-tools"><button id="copy-link">링크 복사</button><a href={href(isWiki ? `raw/wiki/${post.id}.md` : `raw/${post.id}.md`)}>Markdown 원문 ↗</a><span id="copy-status" role="status"></span></div>
+      {!post.data.sample && <Comments postId={isWiki ? `wiki:${post.id}` : post.id} />}
+      {linked.length > 0 && <section class="related-section"><h2>연결 문서</h2>{linked.map(document => <a href={href(`wiki/${document.id}/`)}><span>{document.data.category}</span>{document.data.title} →</a>)}</section>}
+      {backlinks.length > 0 && <section class="related-section"><h2>이 문서를 참조하는 문서</h2>{backlinks.map(document => <a href={href(`wiki/${document.id}/`)}><span>{document.data.category}</span>{document.data.title} →</a>)}</section>}
+      {related.length > 0 && <section class="related-section"><h2>관련 글</h2>{related.map(p => <a href={href(`posts/${p.id}/`)}><span>{p.data.category}{p.data.sample ? ' · 샘플' : ''}</span>{p.data.title} →</a>)}</section>}
+      </div>
+    </div>
+  </article>
+  {post.data.interactive.includes('pi-harness') && <PiHarnessLabs />}
+  <script>
+    const tabList = document.querySelector<HTMLDivElement>('[data-article-tabs]')!;
+    const tabs = [...tabList.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels = document.querySelectorAll<HTMLElement>('[data-article-panel]');
+    const toc = document.querySelector<HTMLElement>('.article-toc');
+    function activateTab(tab: HTMLButtonElement) {
+      const target = tab.getAttribute('aria-controls');
+      tabs.forEach(item => { const selected = item === tab; item.setAttribute('aria-selected', String(selected)); item.tabIndex = selected ? 0 : -1; });
+      panels.forEach(panel => { panel.hidden = panel.id !== target; });
+      if (toc) toc.hidden = target !== 'post-body';
+    }
+    tabs.forEach(tab => tab.addEventListener('click', () => activateTab(tab)));
+    tabList.addEventListener('keydown', event => {
+      const current = tabs.indexOf(document.activeElement as HTMLButtonElement);
+      if (current < 0) return;
+      let next = current;
+      if (event.key === 'ArrowRight') next = (current + 1) % tabs.length;
+      else if (event.key === 'ArrowLeft') next = (current + tabs.length - 1) % tabs.length;
+      else if (event.key === 'Home') next = 0;
+      else if (event.key === 'End') next = tabs.length - 1;
+      else return;
+      event.preventDefault(); activateTab(tabs[next]); tabs[next].focus();
+    });
+    tabList.hidden = false;
+    document.querySelector('#copy-link')?.addEventListener('click', async () => {
+      const status = document.querySelector('#copy-status')!;
+      try { await navigator.clipboard.writeText(window.location.href); status.textContent = '링크를 복사했어요.'; } catch { status.textContent = '주소 표시줄의 링크를 복사해주세요.'; }
+    });
+  </script>
+</Base>

@@ -1,6 +1,8 @@
 ---
 import '../styles/global.css';
+import '../styles/brand.css';
 import Icon from '../components/Icon.astro';
+import BrandLogo from '../components/BrandLogo.astro';
 import { site, href } from '../config';
 interface Props { title?: string; description?: string; active?: string; type?: string; noindex?: boolean; }
 const { title, description = site.description, active = '', type = 'website', noindex = false } = Astro.props;
@@ -16,7 +18,7 @@ const ogImage = new URL(href('og.png'), Astro.site);
     <meta name="description" content={description} />
     <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
     <meta name="author" content={site.author} />
-    <meta name="theme-color" content="#f8f9f5" />
+    <meta name="theme-color" content="#ffffff" />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content={type} />
@@ -24,11 +26,18 @@ const ogImage = new URL(href('og.png'), Astro.site);
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="puzzleleaf 로고와 기술블로그 이름" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="ko_KR" />
     <link rel="canonical" href={canonical} />
+    <meta name="giscus:backlink" content={canonical} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/png" sizes="32x32" href={href('favicon-32.png')} />
     <link rel="icon" type="image/svg+xml" href={href('favicon.svg')} />
+    <link rel="apple-touch-icon" sizes="180x180" href={href('apple-touch-icon.png')} />
     <link rel="alternate" type="application/rss+xml" title={site.title} href={href('rss.xml')} />
     <title>{pageTitle}</title>
     <script is:inline>
@@ -39,26 +48,26 @@ const ogImage = new URL(href('og.png'), Astro.site);
     <a class="skip-link" href="#main">본문으로 건너뛰기</a>
     <header class="site-header">
       <div class="header-inner">
-        <a class="brand" href={href()} aria-label="puzzleleaf 홈"><span class="brand-icon"><Icon name="leaf" size={23} /></span>puzzleleaf<span class="brand-dot">.</span></a>
+        <a class="brand" href={href()} aria-label="puzzleleaf 홈"><BrandLogo /><span>puzzleleaf</span></a>
         <nav aria-label="주 메뉴">
-          <a href={href()} class:list={[{ active: active === 'posts' }]} aria-current={active === 'posts' ? 'page' : undefined}>글<span class="nav-en"> / Writing</span></a>
-          <a href={href('about/')} class:list={[{ active: active === 'about' }]} aria-current={active === 'about' ? 'page' : undefined}>소개<span class="nav-en"> / About</span></a>
+          <a href={href()} class:list={[{ active: active === 'posts' }]} aria-current={active === 'posts' ? 'page' : undefined}>블로그</a>
+          <a href={href('wiki/')} class:list={[{ active: active === 'wiki' }]} aria-current={active === 'wiki' ? 'page' : undefined}>위키</a>
+          <a href={href('tags/')} class:list={[{ active: active === 'tags' }]} aria-current={active === 'tags' ? 'page' : undefined}>태그</a>
+          <a href={href('about/')} class:list={[{ active: active === 'about' }]} aria-current={active === 'about' ? 'page' : undefined}>소개</a>
         </nav>
         <div class="header-actions">
           <button class="icon-button" id="open-search" aria-label="글 검색"><Icon name="search" /></button>
           <button class="icon-button" id="theme-toggle" aria-label="다크 모드로 전환"><span class="light-icon"><Icon name="moon" /></span><span class="dark-icon"><Icon name="sun" /></span></button>
-          <span class="header-separator"></span>
-          <a class="icon-button" href={site.github} target="_blank" rel="noopener noreferrer" aria-label="puzzleleaf GitHub 새 탭에서 열기"><Icon name="github" /></a>
         </div>
       </div>
     </header>
     <main id="main"><slot /></main>
     <footer class="site-footer container">
-      <div><a class="footer-brand" href={href()}><Icon name="leaf" size={17} /> puzzleleaf.</a></div>
-      <div class="footer-right"><div><a href={site.github} target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a><a href={href('rss.xml')}>RSS <Icon name="rss" size={13} /></a></div><small>© {new Date().getFullYear()} puzzleleaf · Built with Astro</small></div>
+      <small>© {new Date().getFullYear()} puzzleleaf</small>
+      <div class="footer-right"><a href={href('rss.xml')}>RSS</a><a href={href('llms.txt')}>llms.txt</a></div>
     </footer>
     <dialog id="search-dialog" aria-labelledby="search-heading">
-      <div class="search-dialog-top"><h2 id="search-heading">기록 속에서 찾기</h2><button class="icon-button" id="close-search" aria-label="검색 닫기"><Icon name="close" /></button></div>
+      <div class="search-dialog-top"><h2 id="search-heading">글 검색</h2><button class="icon-button" id="close-search" aria-label="검색 닫기"><Icon name="close" /></button></div>
       <label class="search-input-wrap"><Icon name="search" /><input id="global-search" type="search" placeholder="제목, 태그, 내용으로 검색하세요" autocomplete="off" aria-label="검색어" /></label>
       <p class="search-hint" id="search-status" role="status">검색어를 입력해보세요.</p><ul id="search-results"></ul>
       <div class="search-dialog-footer"><kbd>ESC</kbd> 닫기 <span><kbd>Ctrl</kbd> + <kbd>K</kbd> 검색</span></div>
@@ -78,7 +87,7 @@ const ogImage = new URL(href('og.png'), Astro.site);
       const input = document.querySelector<HTMLInputElement>('#global-search')!;
       const results = document.querySelector<HTMLUListElement>('#search-results')!;
       const status = document.querySelector<HTMLElement>('#search-status')!;
-      type SearchPost = { title: string; description: string; tags: string[]; url: string; body: string };
+      type SearchPost = { title: string; description: string; kind: string; tags: string[]; url: string; body: string };
       let index: SearchPost[] | undefined;
       let pending: Promise<SearchPost[]> | undefined;
       const loadIndex = () => pending ??= fetch(href('search.json')).then(response => { if (!response.ok) throw new Error('search unavailable'); return response.json() as Promise<SearchPost[]>; });
@@ -95,7 +104,8 @@ const ogImage = new URL(href('og.png'), Astro.site);
             const li = document.createElement('li'); const link = document.createElement('a');
             link.href = post.url; const title = document.createElement('strong'); title.textContent = post.title;
             const desc = document.createElement('span'); desc.textContent = post.description;
-            link.append(title, desc); li.append(link); results.append(li);
+            const kind = document.createElement('small'); kind.textContent = post.kind;
+            link.append(kind, title, desc); li.append(link); results.append(li);
           }
         } catch { pending = undefined; status.textContent = '검색을 불러오지 못했어요. 잠시 후 다시 입력해주세요.'; }
       }

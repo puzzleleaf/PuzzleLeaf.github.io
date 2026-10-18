@@ -1,0 +1,6 @@
+---
+import { href } from '../config';
+interface Props { size?: number; class?: string; alt?: string; }
+const { size = 44, class: className, alt = '' } = Astro.props;
+---
+<img class:list={['brand-logo', className]} src={href('logo.webp')} width={size} height={size} alt={alt} decoding="async" />

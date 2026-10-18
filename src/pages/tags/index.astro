@@ -1,0 +1,25 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import { getContent } from '../../lib/posts';
+import { href } from '../../config';
+const posts = (await getContent()).map(item => item.entry);
+const tags = [...new Set(posts.flatMap(p => p.data.tags))].map(tag => ({ name: tag, count: posts.filter(p => p.data.tags.includes(tag)).length })).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'ko'));
+---
+<Base title="태그" description="태그별로 puzzleleaf의 기술 글을 찾아보세요." active="tags">
+  <section class="tag-page container"><h1>태그</h1><p class="page-description">블로그와 위키를 태그별로 찾아봅니다.</p>
+    <label class="tag-search"><Icon name="search" size={17} /><input type="search" id="tag-search" placeholder="태그 찾기" aria-label="태그 찾기" autocomplete="off" /></label>
+    <div class="tags-directory">{tags.map(tag => <a class="tag-directory-item" data-tag={tag.name} href={href(`tags/${encodeURIComponent(tag.name)}/`)}><span>#{tag.name}</span><span>{tag.count}편 <span aria-hidden="true">↗</span></span></a>)}</div>
+    <p class="tag-count" role="status" id="tag-count">태그 {tags.length}개</p>
+  </section>
+  <script>
+    const input = document.querySelector<HTMLInputElement>('#tag-search')!;
+    const tags = document.querySelectorAll<HTMLAnchorElement>('[data-tag]');
+    const status = document.querySelector('#tag-count')!;
+    input.addEventListener('input', () => {
+      const query = input.value.trim().toLocaleLowerCase(); let count = 0;
+      tags.forEach(tag => { tag.hidden = !tag.dataset.tag!.toLocaleLowerCase().includes(query); if (!tag.hidden) count++; });
+      status.textContent = count ? `태그 ${count}개` : '일치하는 태그가 없습니다.';
+    });
+  </script>
+</Base>
